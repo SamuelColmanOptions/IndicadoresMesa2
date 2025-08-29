@@ -10,7 +10,8 @@
       padding: 0;
       height: 100%;
       width: 100%;
-      overflow: hidden; /* evita scroll */
+      overflow: hidden;
+      background: #000; /* evita flash branco */
     }
     iframe {
       position: fixed;
@@ -23,11 +24,28 @@
   </style>
 </head>
 <body>
-  <iframe 
-    src="https://lookerstudio.google.com/embed/reporting/54b7c921-72e4-44a0-afe2-152eb1c9f98e/page/p_dz2a2qtivd" 
+  <iframe
+    id="reportFrame"
+    src="https://lookerstudio.google.com/embed/reporting/54b7c921-72e4-44a0-afe2-152eb1c9f98e/page/p_dz2a2qtivd"
     frameborder="0"
     allowfullscreen
     sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
   </iframe>
+
+  <script>
+    // Tempo de refresh em segundos (5 minutos = 300s)
+    const REFRESH_SECONDS = 300;
+
+    const iframe = document.getElementById('reportFrame');
+    const baseSrc = iframe.getAttribute('src');
+
+    function refreshIframe() {
+      const sep = baseSrc.includes('?') ? '&' : '?';
+      iframe.src = `${baseSrc}${sep}t=${Date.now()}`;
+    }
+
+    // Recarrega de X em X segundos
+    setInterval(refreshIframe, REFRESH_SECONDS * 1000);
+  </script>
 </body>
 </html>
